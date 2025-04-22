@@ -16,5 +16,6 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Categories category;
-
+    @Column(name="name", length = Integer.MAX_VALUE)
+    private String name;
 }

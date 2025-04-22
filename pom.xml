@@ -73,6 +73,17 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<configuration>
+					<url>jdbc:postgresql://localhost:5432/pc_configurer</url>
+					<username>postgres</username>
+					<password>Konteiner04</password>
+					<outputFile>target/data-changelog.xml</outputFile>
+					<diffTypes>data</diffTypes>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
@@ -97,6 +108,16 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.csv</include>
+					<include>**/*.yaml</include>
+					<include>**/*.yml</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 
 </project>

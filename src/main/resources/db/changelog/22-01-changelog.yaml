@@ -1,0 +1,303 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1745332201888-1
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_attribute_values
+                  name: id
+                  type: INT
+              - column:
+                  name: value
+                  type: text(2147483647)
+            tableName: attribute_values
+  - changeSet:
+      id: 1745332201888-2
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_attributes
+                  name: id
+                  type: INT
+              - column:
+                  name: name
+                  type: text(2147483647)
+            tableName: attributes
+  - changeSet:
+      id: 1745332201888-3
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_categories
+                  name: id
+                  type: INT
+              - column:
+                  name: name
+                  type: text(2147483647)
+            tableName: categories
+  - changeSet:
+      id: 1745332201888-4
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_product_attributes
+                  name: id
+                  type: INT
+              - column:
+                  name: product_id
+                  type: INT
+              - column:
+                  name: attribute_id
+                  type: INT
+              - column:
+                  name: attribute_value_id
+                  type: INT
+            tableName: product_attributes
+  - changeSet:
+      id: 1745332201888-5
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_product_prices
+                  name: id
+                  type: INT
+              - column:
+                  name: product_id
+                  type: INT
+              - column:
+                  name: price
+                  type: INT
+              - column:
+                  name: source
+                  type: text(2147483647)
+            tableName: product_prices
+  - changeSet:
+      id: 1745332201888-6
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_products
+                  name: id
+                  type: INT
+              - column:
+                  name: category_id
+                  type: INT
+              - column:
+                  name: name
+                  type: text(2147483647)
+            tableName: products
+  - changeSet:
+      id: 1745332201888-7
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_assemblies
+                  name: id
+                  type: INT
+              - column:
+                  name: name
+                  type: text(2147483647)
+              - column:
+                  name: user_id
+                  type: INT
+            tableName: user_assemblies
+  - changeSet:
+      id: 1745332201888-8
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_assembly_components
+                  name: id
+                  type: INT
+              - column:
+                  name: product_id
+                  type: INT
+              - column:
+                  name: assembly_id
+                  type: INT
+            tableName: user_assembly_components
+  - changeSet:
+      id: 1745332201888-9
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_users
+                  name: id
+                  type: INT
+              - column:
+                  name: username
+                  type: text(2147483647)
+              - column:
+                  name: email
+                  type: text(2147483647)
+              - column:
+                  name: password
+                  type: text(2147483647)
+            tableName: users
+  - changeSet:
+      id: 1745332201888-10
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: category_id
+            baseTableName: products
+            constraintName: FK_PRODUCTS_ON_CATEGORY
+            referencedColumnNames: id
+            referencedTableName: categories
+  - changeSet:
+      id: 1745332201888-11
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: attribute_id
+            baseTableName: product_attributes
+            constraintName: FK_PRODUCT_ATTRIBUTES_ON_ATTRIBUTE
+            referencedColumnNames: id
+            referencedTableName: attributes
+  - changeSet:
+      id: 1745332201888-12
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: attribute_value_id
+            baseTableName: product_attributes
+            constraintName: FK_PRODUCT_ATTRIBUTES_ON_ATTRIBUTE_VALUE
+            referencedColumnNames: id
+            referencedTableName: attribute_values
+  - changeSet:
+      id: 1745332201888-13
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: product_attributes
+            constraintName: FK_PRODUCT_ATTRIBUTES_ON_PRODUCT
+            referencedColumnNames: id
+            referencedTableName: products
+  - changeSet:
+      id: 1745332201888-14
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: product_prices
+            constraintName: FK_PRODUCT_PRICES_ON_PRODUCT
+            referencedColumnNames: id
+            referencedTableName: products
+  - changeSet:
+      id: 1745332201888-15
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: user_assemblies
+            constraintName: FK_USER_ASSEMBLIES_ON_USER
+            referencedColumnNames: id
+            referencedTableName: users
+  - changeSet:
+      id: 1745332201888-16
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: assembly_id
+            baseTableName: user_assembly_components
+            constraintName: FK_USER_ASSEMBLY_COMPONENTS_ON_ASSEMBLY
+            referencedColumnNames: id
+            referencedTableName: user_assemblies
+  - changeSet:
+      id: 1745332201888-17
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: user_assembly_components
+            constraintName: FK_USER_ASSEMBLY_COMPONENTS_ON_PRODUCT
+            referencedColumnNames: id
+            referencedTableName: products
+  #TODO Сделать загрузку данных через csv
+  - changeSet:
+      id: load-user-data
+      author: waler
+      changes:
+        - loadData:
+            tableName: users
+            file: db/data/data.csv
+            separator: ","
+            encoding: UTF-8
+            quotchar: '"'
+            columns:
+              - column:
+                  name: id
+                  type: NUMERIC
+              - column:
+                  name: name
+                  type: STRING
+              - column:
+                  name: email
+                  type: STRING
+              - column:
+                  name: password
+                  type: STRING
+            primaryKey: id
