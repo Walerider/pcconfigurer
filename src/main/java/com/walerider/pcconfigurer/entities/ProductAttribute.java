@@ -9,6 +9,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="product_attributes")
 public class ProductAttribute {
     @Id
     @Getter

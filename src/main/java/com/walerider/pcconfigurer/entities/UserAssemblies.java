@@ -11,6 +11,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="user_assemblies")
 public class UserAssemblies {
     @Id
     @Column(name = "id", nullable = false)

@@ -11,6 +11,7 @@ import lombok.Setter;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "product_prices")
 public class ProductPrices {
     @Id
     @Column(name = "id", nullable = false)
