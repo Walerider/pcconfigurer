@@ -276,9 +276,8 @@ databaseChangeLog:
             constraintName: FK_USER_ASSEMBLY_COMPONENTS_ON_PRODUCT
             referencedColumnNames: id
             referencedTableName: products
-  #TODO Сделать загрузку данных через csv
   - changeSet:
-      id: load-user-data
+      id: 1745332201888-18
       author: waler
       changes:
         - loadData:
@@ -290,14 +289,18 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
+                  index: 1
                   type: NUMERIC
               - column:
-                  name: name
+                  name: username
+                  index: 2
                   type: STRING
               - column:
                   name: email
+                  index: 3
                   type: STRING
               - column:
                   name: password
+                  index: 4
                   type: STRING
             primaryKey: id
