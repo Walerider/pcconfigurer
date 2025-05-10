@@ -1,5 +1,6 @@
 package com.walerider.pcconfigurer.services;
 
+import com.walerider.pcconfigurer.entities.UserAssemblies;
 import com.walerider.pcconfigurer.repositories.UserAssembliesRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ public class UserAssembliesService {
     @Autowired
     public UserAssembliesService(UserAssembliesRepository userAssembliesRepository) {
         this.userAssembliesRepository = userAssembliesRepository;
-
+    }
+    public UserAssemblies createUserAssemblies(UserAssemblies userAssemblies) {
+        
+        return userAssembliesRepository.save(userAssemblies);
     }
 }

@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1746782590701-1
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addAutoIncrement:
+            columnDataType: int
+            columnName: id
+            tableName: users
+

@@ -17,7 +17,7 @@ public class AttributeValue {
     @Id
     @Getter
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
 
     @Getter

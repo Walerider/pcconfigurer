@@ -79,6 +79,7 @@
 					<url>jdbc:postgresql://localhost:5432/pc_configurer</url>
 					<username>postgres</username>
 					<password>Konteiner04</password>
+					<changeLogFile>src/main/resources/db/changelog/db.changelog-master.yaml</changeLogFile>
 					<outputFile>target/data-changelog.xml</outputFile>
 					<diffTypes>data</diffTypes>
 				</configuration>

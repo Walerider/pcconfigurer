@@ -12,7 +12,7 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_attribute_values
                   name: id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: value
                   type: text(2147483647)
@@ -30,7 +30,7 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_attributes
                   name: id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: name
                   type: text(2147483647)
@@ -48,7 +48,7 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_categories
                   name: id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: name
                   type: text(2147483647)
@@ -66,16 +66,16 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_product_attributes
                   name: id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: product_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: attribute_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: attribute_value_id
-                  type: INT
+                  type: BIGINT
             tableName: product_attributes
   - changeSet:
       id: 1745332201888-5
@@ -90,13 +90,13 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_product_prices
                   name: id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: product_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: price
-                  type: INT
+                  type: BIGINT
               - column:
                   name: source
                   type: text(2147483647)
@@ -114,10 +114,10 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_products
                   name: id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: category_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: name
                   type: text(2147483647)
@@ -135,13 +135,13 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_user_assemblies
                   name: id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: name
                   type: text(2147483647)
               - column:
                   name: user_id
-                  type: INT
+                  type: BIGINT
             tableName: user_assemblies
   - changeSet:
       id: 1745332201888-8
@@ -156,13 +156,13 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_user_assembly_components
                   name: id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: product_id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: assembly_id
-                  type: INT
+                  type: BIGINT
             tableName: user_assembly_components
   - changeSet:
       id: 1745332201888-9
@@ -177,7 +177,7 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_users
                   name: id
-                  type: INT
+                  type: BIGINT
               - column:
                   name: username
                   type: text(2147483647)

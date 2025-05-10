@@ -15,7 +15,7 @@ import lombok.Setter;
 public class ProductPrices {
     @Id
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
