@@ -14,6 +14,7 @@ import lombok.Setter;
 @Table(name = "user_assembly_components")
 public class UserAssemblyComponents {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -23,9 +24,9 @@ public class UserAssemblyComponents {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assembly_id")
-    private UserAssemblies assembly;
+    private UserAssembly assembly;
 
-    public UserAssemblyComponents(Product product, UserAssemblies assembly) {
+    public UserAssemblyComponents(Product product, UserAssembly assembly) {
         this.product = product;
         this.assembly = assembly;
     }

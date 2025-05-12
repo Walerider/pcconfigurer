@@ -1,0 +1,93 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1746904408345-1
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addAutoIncrement:
+            columnDataType: bigint
+            columnName: id
+            tableName: attribute_values
+  - changeSet:
+      id: 1746904408345-2
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addAutoIncrement:
+            columnDataType: bigint
+            columnName: id
+            tableName: attributes
+  - changeSet:
+      id: 1746904408345-3
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addAutoIncrement:
+            columnDataType: bigint
+            columnName: id
+            tableName: categories
+  - changeSet:
+      id: 1746904408345-4
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addAutoIncrement:
+            columnDataType: bigint
+            columnName: id
+            tableName: product_attributes
+  - changeSet:
+      id: 1746904408345-5
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addAutoIncrement:
+            columnDataType: bigint
+            columnName: id
+            tableName: product_prices
+  - changeSet:
+      id: 1746904408345-6
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addAutoIncrement:
+            columnDataType: bigint
+            columnName: id
+            tableName: products
+  - changeSet:
+      id: 1746904408345-7
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addAutoIncrement:
+            columnDataType: bigint
+            columnName: id
+            tableName: user_assemblies
+  - changeSet:
+      id: 1746904408345-8
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addAutoIncrement:
+            columnDataType: bigint
+            columnName: id
+            tableName: user_assembly_components
+  - changeSet:
+      id: 1746904408345-9
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: price
+            tableName: product_prices
+  - changeSet:
+      id: 1746904408345-10
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: price
+                  type: INT
+            tableName: product_prices
+

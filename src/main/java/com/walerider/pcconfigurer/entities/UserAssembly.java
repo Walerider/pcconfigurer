@@ -1,5 +1,6 @@
 package com.walerider.pcconfigurer.entities;
 
+import com.walerider.pcconfigurer.DTO.UserAssemblyDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,8 +13,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="user_assemblies")
-public class UserAssemblies {
+public class UserAssembly {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -24,8 +26,17 @@ public class UserAssemblies {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public UserAssemblies(String name, User user) {
+    public UserAssembly(String name, User user) {
         this.name = name;
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "UserAssembly{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", user=" + user.toString() +
+                '}';
     }
 }

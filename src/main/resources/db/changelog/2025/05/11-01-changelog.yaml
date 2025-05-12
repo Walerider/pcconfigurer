@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1746988031215-1
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_productimage
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: product_id
+                  type: BIGINT
+              - column:
+                  name: image_source
+                  type: text(2147483647)
+            tableName: product_image
+  - changeSet:
+      id: 1746988031215-2
+      author: waler
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: product_id
+            baseTableName: product_image
+            constraintName: FK_PRODUCTIMAGE_ON_PRODUCT
+            referencedColumnNames: id
+            referencedTableName: products
+
