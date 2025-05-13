@@ -1,5 +1,6 @@
 package com.walerider.pcconfigurer.Controllers;
 
+import com.walerider.pcconfigurer.DTO.ProductDTO;
 import com.walerider.pcconfigurer.entities.Product;
 import com.walerider.pcconfigurer.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ProductRestController {
         return productService.getAllProducts();
     }
     @GetMapping("/category/{id}")
-    public List<Product> getAllProductsByCategoryId(@PathVariable Long id) {
+    public List<ProductDTO> getAllProductsByCategoryId(@PathVariable Long id) {
         return productService.findByCategoryId(id);
     }
 }

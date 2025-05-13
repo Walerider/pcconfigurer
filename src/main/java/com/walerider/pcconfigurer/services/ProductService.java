@@ -1,5 +1,6 @@
 package com.walerider.pcconfigurer.services;
 
+import com.walerider.pcconfigurer.DTO.ProductDTO;
 import com.walerider.pcconfigurer.entities.Product;
 import com.walerider.pcconfigurer.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -21,7 +22,7 @@ public class ProductService {
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
-    public List<Product> findByCategoryId(@PathVariable Long categoryId) {
+    public List<ProductDTO> findByCategoryId(@PathVariable Long categoryId) {
         return productRepository.findByCategoryId(categoryId);
     }
 }
