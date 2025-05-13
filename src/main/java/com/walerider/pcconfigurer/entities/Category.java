@@ -1,5 +1,6 @@
 package com.walerider.pcconfigurer.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,30 +10,38 @@ import lombok.Setter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+@Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "categories")
-public class Categories {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    @Getter
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Getter
     @Setter
     @Column(name = "name", length = Integer.MAX_VALUE)
     private String name;
 
-    @Getter
     @Setter
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private Set<Product> products = new LinkedHashSet<>();
 
-    public Categories(String name) {
+    public Category(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", products=" + products +
+                '}';
     }
 }

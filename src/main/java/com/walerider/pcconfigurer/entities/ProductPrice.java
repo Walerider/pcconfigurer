@@ -1,5 +1,6 @@
 package com.walerider.pcconfigurer.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "product_prices")
-public class ProductPrices {
+public class ProductPrice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -20,6 +21,7 @@ public class ProductPrices {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
 
     @Column(name = "price")
@@ -28,7 +30,7 @@ public class ProductPrices {
     @Column(name = "source", length = Integer.MAX_VALUE)
     private String source;
 
-    public ProductPrices(Product product, Integer price, String source) {
+    public ProductPrice(Product product, Integer price, String source) {
         this.product = product;
         this.price = price;
         this.source = source;
