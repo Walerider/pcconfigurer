@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class CategoryService {
     private final CategoryRepository categoryRepository;
-
+    //todo получение списка категорий
     @Autowired
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;

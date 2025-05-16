@@ -13,4 +13,5 @@ public class UserAssemblyComponentsService {
     public UserAssemblyComponentsService(UserAssemblyComponentsRepository userAssemblyComponentsRepository) {
         this.userAssemblyComponentsRepository = userAssemblyComponentsRepository;
     }
+    //todo сделать получение компонентов по id сборки
 }

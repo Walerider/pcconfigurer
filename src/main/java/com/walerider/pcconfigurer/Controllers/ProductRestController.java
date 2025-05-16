@@ -20,7 +20,7 @@ public class ProductRestController {
         this.productService = productService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/all")//todo тут тоже DTO должен быть
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
@@ -28,4 +28,6 @@ public class ProductRestController {
     public List<ProductDTO> getAllProductsByCategoryId(@PathVariable Long id) {
         return productService.findByCategoryId(id);
     }
+    /*todo надо пофиксить DTO, чтобы у меня ещё аттрибуты со значениме выдавались, которые к продукту привязаны
+    *  */
 }

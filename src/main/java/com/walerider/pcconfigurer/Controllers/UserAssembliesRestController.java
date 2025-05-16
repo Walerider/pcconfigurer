@@ -36,4 +36,6 @@ public class UserAssembliesRestController {
         userAssembliesService.updateUserAssemblies(request,id);
         return new ResponseEntity<>("Assembly by id " + id + " update", HttpStatus.OK);
     }
+    /*todo сделать удаление сборок
+    *  Надо DTO здешний пофиксить, чтобы мне сборки отдавало сразу с компонентами*/
 }
