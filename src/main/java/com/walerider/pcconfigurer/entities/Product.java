@@ -2,10 +2,7 @@ package com.walerider.pcconfigurer.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -13,10 +10,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "products")
+@Builder
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -24,7 +21,8 @@ public class Product {
     @JoinColumn(name = "category_id")
     @JsonBackReference
     private Category category;
-    @Column(name="name", length = Integer.MAX_VALUE)
+
+    @Column(name="name", length = Integer.MAX_VALUE, unique = true)
     private String name;
 
     @Column(name = "description", length = Integer.MAX_VALUE)

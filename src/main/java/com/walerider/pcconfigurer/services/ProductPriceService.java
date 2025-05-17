@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Service
 @Transactional
 public class ProductPriceService {
-        private final ProductPriceRepository productPriceRepository;
+    private final ProductPriceRepository productPriceRepository;
 
     public ProductPriceService(ProductPriceRepository productPriceRepository) {
         this.productPriceRepository = productPriceRepository;
     }
+
     public ProductPrice getProductPriceByProductId(@PathVariable long id) {
-        if(productPriceRepository.findByProductId(id) == null){
+        if (productPriceRepository.findByProductId(id) == null) {
             throw new RuntimeException("Product not found");
         }
         return productPriceRepository.findByProductId(id);

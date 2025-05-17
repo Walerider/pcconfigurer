@@ -1,13 +1,19 @@
 package com.walerider.pcconfigurer.services;
 
-import com.walerider.pcconfigurer.DTO.UserAssemblyDTO;
-import com.walerider.pcconfigurer.Mappers.UserAssemblyMapper;
+import com.walerider.pcconfigurer.DTO.userAssembly.UserAssemblyComponentsDto;
+import com.walerider.pcconfigurer.DTO.userAssembly.UserAssemblyRequest;
+import com.walerider.pcconfigurer.DTO.userAssembly.UserAssemblyResponse;
+import com.walerider.pcconfigurer.entities.Product;
 import com.walerider.pcconfigurer.entities.User;
 import com.walerider.pcconfigurer.entities.UserAssembly;
+import com.walerider.pcconfigurer.entities.UserAssemblyComponents;
+import com.walerider.pcconfigurer.repositories.ProductRepository;
 import com.walerider.pcconfigurer.repositories.UserAssembliesRepository;
+import com.walerider.pcconfigurer.repositories.UserAssemblyComponentsRepository;
 import com.walerider.pcconfigurer.repositories.UserRepository;
+import com.walerider.pcconfigurer.validation.exceptions.BadRequestException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,41 +22,84 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserAssembliesService {
     private final UserAssembliesRepository userAssembliesRepository;
     private final UserRepository userRepository;
-    private final UserAssemblyMapper mapper;
-    @Autowired
-    public UserAssembliesService(UserAssembliesRepository userAssembliesRepository, UserRepository userRepository, UserAssemblyMapper mapper) {
-        this.userAssembliesRepository = userAssembliesRepository;
-        this.userRepository = userRepository;
-        this.mapper = mapper;
+    private final ProductRepository productRepository;
+    private final UserAssemblyComponentsRepository userAssemblyComponentsRepository;
+//    private final UserAssemblyMapper mapper;
+
+    public List<UserAssemblyResponse> getAllUserAssemblies() {
+        List<UserAssembly> userAssemblies = userAssembliesRepository.findAllWithComponents();
+        return userAssemblies.stream()
+                .map((a) -> UserAssemblyResponse.builder()
+                        .id(a.getId())
+                        .userId(a.getUser().getId())
+                        .name(a.getName())
+                        .userAssemblyComponents(a.getUserAssemblyComponents().stream()
+                                .map(ac -> UserAssemblyComponentsDto.builder()
+                                        .id(ac.getId())
+                                        .productName(ac.getProduct().getName()).build())
+                                .toList()
+                        ).build())
+                .toList();
     }
-    public List<UserAssemblyDTO> getAllUserAssemblies() {
-        return mapper.toDtoList(userAssembliesRepository.findAll());
+
+    public List<UserAssemblyResponse> getAllUserAssembliesDTOByUserId(Long userId) {
+        List<UserAssembly> userAssemblies = userAssembliesRepository.findAllByUserIdWithComponents(userId);
+        return userAssemblies.stream()
+                .map((a) -> UserAssemblyResponse.builder()
+                        .id(a.getId())
+                        .userId(a.getUser().getId())
+                        .name(a.getName())
+                        .userAssemblyComponents(a.getUserAssemblyComponents().stream()
+                                .map(ac -> UserAssemblyComponentsDto.builder()
+                                        .id(ac.getId())
+                                        .productName(ac.getProduct().getName()).build())
+                                .toList()
+                        ).build())
+                .toList();
     }
-    public List<UserAssemblyDTO> getAllUserAssembliesDTOByUserId(Long userId) {
-        List<UserAssembly> userAssemblies = userAssembliesRepository.findByUserId(userId);
-        if (userAssemblies.isEmpty()) {
-            return null;
-        }
-        return mapper.toDtoList(userAssemblies);
-    }
-    public void createUserAssemblies(@RequestBody UserAssemblyDTO request) {
+
+    public void createUserAssemblies(UserAssemblyRequest request) {
         User user = userRepository
                 .findById(request.getUserId())
-                .orElseThrow(()-> new RuntimeException("User doesnt exist"));
-        if(userAssembliesRepository.findByName(request.getName()) != null){
-            throw new RuntimeException("Assembly with this name already exists");
+                .orElseThrow(() -> new BadRequestException("User doesn't exist"));
+
+        if (userAssembliesRepository.findByName(request.getName()) != null) {
+            throw new BadRequestException("Assembly with this name already exists");
         }
-        userAssembliesRepository.save(new UserAssembly(request.getName(), user));
+        if (productRepository.countByIdIn(request.getProductIds()) != request.getProductIds().size()) {
+            throw new BadRequestException("not valid ids");
+        }
+
+        UserAssembly userAssembly = new UserAssembly(request.getName(), user);
+        userAssembliesRepository.save(userAssembly);
+
+        List<Product> products = productRepository.findAllById(request.getProductIds());
+        List<UserAssemblyComponents> userAssemblyComponentsList = products.stream()
+                .map(p -> UserAssemblyComponents.builder()
+                        .assembly(userAssembly)
+                        .product(p).build())
+                .toList();
+        userAssemblyComponentsRepository.saveAll(userAssemblyComponentsList);
     }
-    public void updateUserAssemblies(@RequestBody UserAssemblyDTO request, @PathVariable Long assemblyId) {
+
+    public void updateUserAssemblies(UserAssemblyRequest request, Long assemblyId) {
         userAssembliesRepository.findById(assemblyId)
                 .map(assembly -> {
                     assembly.setName(request.getName());
-                    assembly.setUser(userRepository.findById(request.getUserId()).orElseThrow(() -> new RuntimeException("User doesnt exist")));
+                    assembly.setUser(userRepository.findById(request.getUserId())
+                            .orElseThrow(() -> new BadRequestException("User doesnt exist")));
                     return userAssembliesRepository.save(assembly);
-                }).orElseThrow(() -> new RuntimeException("Assembly not found"));
+                }).orElseThrow(() -> new BadRequestException("Assembly not found"));
+    }
+
+    public void deleteUserAssembly(Long id) {
+        if (!userAssembliesRepository.existsById(id)) {
+            throw new BadRequestException("assembly not found");
+        }
+        userAssembliesRepository.deleteById(id);
     }
 }

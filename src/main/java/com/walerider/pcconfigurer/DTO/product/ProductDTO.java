@@ -1,9 +1,8 @@
-package com.walerider.pcconfigurer.DTO;
+package com.walerider.pcconfigurer.DTO.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 @Data
 @Builder
@@ -12,7 +11,11 @@ public class ProductDTO {
     private Long id;
     private String name;
     private String description;
-    @NonNull
+
+    private String categoryName;
+
     private Integer price;
 
+    private String attributeName;
+    private String attributeValue;
 }

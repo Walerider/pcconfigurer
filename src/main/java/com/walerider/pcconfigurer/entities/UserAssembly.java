@@ -1,11 +1,12 @@
 package com.walerider.pcconfigurer.entities;
 
-import com.walerider.pcconfigurer.DTO.UserAssemblyDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -25,6 +26,9 @@ public class UserAssembly {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "assembly", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserAssemblyComponents> userAssemblyComponents;
 
     public UserAssembly(String name, User user) {
         this.name = name;

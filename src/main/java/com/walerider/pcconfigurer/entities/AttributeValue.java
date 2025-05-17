@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,12 +14,9 @@ import lombok.Setter;
 public class AttributeValue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
     @Column(name = "id", nullable = false)
     private Long id;
 
-
-    @Getter
     @Setter
     @Column(name = "value", length = Integer.MAX_VALUE)
     private String value;

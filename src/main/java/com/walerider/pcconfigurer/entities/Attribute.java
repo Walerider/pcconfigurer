@@ -1,24 +1,21 @@
 package com.walerider.pcconfigurer.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="attributes")
+@Builder
 public class Attribute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", length = Integer.MAX_VALUE)
-    @Getter
+    @Column(name = "name", length = Integer.MAX_VALUE, unique = true)
     @Setter
     private String name;
 

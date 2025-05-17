@@ -1,10 +1,7 @@
 package com.walerider.pcconfigurer.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -12,6 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_assembly_components")
+@Builder
 public class UserAssemblyComponents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

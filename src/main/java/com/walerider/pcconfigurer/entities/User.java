@@ -6,30 +6,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
 public class User {
-
     @Id
-    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Setter
-    @Getter
-    @Column(name = "username", length = Integer.MAX_VALUE)
+    @Column(name = "username", length = Integer.MAX_VALUE, unique = true)
     private String username;
 
     @Setter
-    @Getter
-    @Column(name = "email", length = Integer.MAX_VALUE)
+    @Column(name = "email", length = Integer.MAX_VALUE, unique = true)
     private String email;
 
     @Setter
-    @Getter
     @Column(name = "password", length = Integer.MAX_VALUE)
     private String password;
 

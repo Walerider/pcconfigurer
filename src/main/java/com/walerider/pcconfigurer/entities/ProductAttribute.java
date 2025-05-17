@@ -1,37 +1,32 @@
 package com.walerider.pcconfigurer.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="product_attributes")
+@Builder
 public class ProductAttribute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    @Getter
     @Column(name = "id", nullable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    @Getter
     @Setter
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Getter
     @Setter
     @JoinColumn(name = "attribute_id")
     private Attribute attribute;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Getter
     @Setter
     @JoinColumn(name = "attribute_value_id")
     private AttributeValue attributeValue;

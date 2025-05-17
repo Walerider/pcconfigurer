@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AttributeValuesRepository extends JpaRepository<AttributeValue, Integer> {
+public interface AttributeValuesRepository extends JpaRepository<AttributeValue, Long> {
+    boolean existsByValue(String value);
 }
