@@ -21,6 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                 WHERE p.category.id = :id
             """)
     List<ProductDTO> findByCategoryId(Long id);
+    //TODO сделать OneToMany отношение aттрибутов
 
     @Query("""
                 SELECT new com.walerider.pcconfigurer.DTO.product.ProductDTO

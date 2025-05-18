@@ -18,4 +18,5 @@ public class ProductDTO {
 
     private String attributeName;
     private String attributeValue;
+    //TODO сделать OneToMany отношение aттрибутов
 }
