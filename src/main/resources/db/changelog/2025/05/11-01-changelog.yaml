@@ -32,4 +32,81 @@ databaseChangeLog:
             constraintName: FK_PRODUCTIMAGE_ON_PRODUCT
             referencedColumnNames: id
             referencedTableName: products
+  - changeSet:
+      id: 1746988031215-5
+      author: waler
+      changes:
+        - loadData:
+            tableName: categories
+            file: db/data/categories.csv
+            separator: ","
+            encoding: UTF-8
+            quotchar: '"'
+            columns:
+              - column:
+                  name: id
+                  index: 1
+                  type: NUMERIC
+              - column:
+                  name: name
+                  index: 2
+                  type: STRING
+            primaryKey: id
+  - changeSet:
+      id: 1746988031215-3
+      author: waler
+      changes:
+        - loadData:
+            tableName: products
+            file: db/data/products.csv
+            separator: ","
+            encoding: UTF-8
+            quotchar: '"'
+            columns:
+              - column:
+                  name: id
+                  index: 1
+                  type: NUMERIC
+              - column:
+                  name: category_id
+                  index: 2
+                  type: NUMERIC
+              - column:
+                  name: name
+                  index: 3
+                  type: STRING
+              - column:
+                  name: description
+                  index: 4
+                  type: STRING
+            primaryKey: id
+  - changeSet:
+      id: 1746988031215-4
+      author: waler
+      changes:
+        - loadData:
+            tableName: product_prices
+            file: db/data/product_prices.csv
+            separator: ","
+            encoding: UTF-8
+            quotchar: '"'
+            columns:
+              - column:
+                  name: id
+                  index: 1
+                  type: NUMERIC
+              - column:
+                  name: product_id
+                  index: 2
+                  type: NUMERIC
+              - column:
+                  name: source
+                  index: 3
+                  type: STRING
+              - column:
+                  name: price
+                  index: 4
+                  type: NUMERIC
+            primaryKey: id
+
 

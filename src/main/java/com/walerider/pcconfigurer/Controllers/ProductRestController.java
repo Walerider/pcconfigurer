@@ -1,8 +1,10 @@
 package com.walerider.pcconfigurer.Controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.walerider.pcconfigurer.DTO.product.CreateProductRequest;
 import com.walerider.pcconfigurer.DTO.product.ProductDTO;
-import com.walerider.pcconfigurer.entities.Product;
+import com.walerider.pcconfigurer.repositories.ProductRepository;
 import com.walerider.pcconfigurer.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -27,6 +29,12 @@ public class Product {
 
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductAttribute> productAttributes;
+
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductPrice> productPrices;
 
     public Product(Category category, String name, String description) {
         this.category = category;

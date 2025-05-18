@@ -1,6 +1,7 @@
 package com.walerider.pcconfigurer.services;
 
 import com.walerider.pcconfigurer.DTO.product.CreateProductRequest;
+import com.walerider.pcconfigurer.DTO.product.ProductAttributeDTO;
 import com.walerider.pcconfigurer.DTO.product.ProductDTO;
 import com.walerider.pcconfigurer.entities.*;
 import com.walerider.pcconfigurer.repositories.*;
@@ -22,11 +23,11 @@ public class ProductService {
     private final ProductAttributeRepository productAttributeRepository;
 
     public List<ProductDTO> getAllProducts() {
-        return productRepository.findAllWithSource();
+        return toProductDTOList(productRepository.findAllWithSource());
     }
 
     public List<ProductDTO> findByCategoryId(@PathVariable Long categoryId) {
-        return productRepository.findByCategoryId(categoryId);
+        return toProductDTOList(productRepository.findByCategoryId(categoryId));
     }
 
     public void create(CreateProductRequest request) {
@@ -56,5 +57,23 @@ public class ProductService {
                 .product(product)
                 .attributeValue(attributeValue)
                 .attribute(attribute).build());
+    }
+
+    private List<ProductDTO> toProductDTOList(List<Product> products) {
+        return products.stream()
+                .map(p -> ProductDTO.builder()
+                        .id(p.getId())
+                        .name(p.getName())
+                        .description(p.getDescription())
+                        .prices(p.getProductPrices().stream()
+                                .map(ProductPrice::getPrice).toList()
+                        )
+                        .productAttributes(p.getProductAttributes().stream()
+                                .map(a -> ProductAttributeDTO.builder()
+                                        .name(a.getAttribute().getName())
+                                        .value(a.getAttributeValue().getValue()).build()
+                                ).toList()
+                        ).build())
+                .toList();
     }
 }

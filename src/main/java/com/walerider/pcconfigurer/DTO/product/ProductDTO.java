@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -12,11 +14,9 @@ public class ProductDTO {
     private String name;
     private String description;
 
-    private String categoryName;
+    private List<Integer> prices;
 
-    private Integer price;
+    private List<ProductAttributeDTO> productAttributes;
 
-    private String attributeName;
-    private String attributeValue;
-    //TODO сделать OneToMany отношение aттрибутов
+    //сделать OneToMany отношение aттрибутов
 }
