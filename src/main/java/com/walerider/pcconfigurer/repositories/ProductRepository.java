@@ -12,24 +12,24 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("""
-        SELECT new com.walerider.pcconfigurer.DTO.product.ProductDTO
-        (p.id, p.name, p.description, c.name, pr.price, pa.attribute.name, pa.attributeValue.value)
-        FROM Product p
-        JOIN ProductPrice pr ON pr.product.id = p.id
-        JOIN Category c ON p.category.id = c.id
-        JOIN ProductAttribute pa ON pa.product.id = p.id
-        WHERE p.category.id = :id
-    """)
+                SELECT new com.walerider.pcconfigurer.DTO.product.ProductDTO
+                (p.id, p.name, p.description, c.name, pr.price, pa.attribute.name, pa.attributeValue.value)
+                FROM Product p
+                LEFT JOIN ProductPrice pr ON pr.product.id = p.id
+                LEFT JOIN Category c ON p.category.id = c.id
+                LEFT JOIN ProductAttribute pa ON pa.product.id = p.id
+                WHERE p.category.id = :id
+            """)
     List<ProductDTO> findByCategoryId(Long id);
 
     @Query("""
-        SELECT new com.walerider.pcconfigurer.DTO.product.ProductDTO
-        (p.id, p.name, p.description, c.name, pr.price, pa.attribute.name, pa.attributeValue.value)
-        FROM Product p
-        JOIN ProductPrice pr ON pr.product.id = p.id
-        JOIN Category c ON p.category.id = c.id
-        JOIN ProductAttribute pa ON pa.product.id = p.id
-    """)
+                SELECT new com.walerider.pcconfigurer.DTO.product.ProductDTO
+                (p.id, p.name, p.description, c.name, pr.price, pa.attribute.name, pa.attributeValue.value)
+                FROM Product p
+                LEFT JOIN ProductPrice pr ON pr.product.id = p.id
+                LEFT JOIN Category c ON p.category.id = c.id
+                LEFT JOIN ProductAttribute pa ON pa.product.id = p.id
+            """)
     List<ProductDTO> findAllWithSource();
 
     boolean existsByName(String name);
