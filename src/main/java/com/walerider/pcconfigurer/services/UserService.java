@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -20,14 +21,14 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
 
-    public void createUser(User user) {
+    public User createUser(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new BadRequestException("User with this username already exists");
         }
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new BadRequestException("User with this email already exists");
         }
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public List<User> getAllUsers() {
@@ -44,7 +45,17 @@ public class UserService {
                 })
                 .orElseThrow(() -> new BadRequestException("User not found"));
     }
-
+    public User getUserByUsername(@RequestParam String username, @RequestParam String password) {
+        if(userRepository.existsByUsername(username)) {
+            User userFound = userRepository.findByUsername(username);
+            if(userFound.getPassword().equals(password)) {
+                return userFound;
+            }else{
+                throw new BadRequestException("Wrong password");
+            }
+        }
+        throw new BadRequestException("User not found");
+    }
     public void deleteUser(@PathVariable Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("User not found"));

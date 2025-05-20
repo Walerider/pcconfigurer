@@ -12,6 +12,7 @@ public interface UserAssemblyMapper {
 //    @Mapping(target = "id", source = "id")
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "name", source = "name")
+    @Mapping(target = "price",source = "price")
     UserAssemblyRequest toDto(UserAssembly userAssembly);
     List<UserAssemblyRequest> toDtoList(List<UserAssembly> assemblies);
 }

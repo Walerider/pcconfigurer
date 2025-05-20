@@ -29,6 +29,9 @@ public class ProductService {
     public List<ProductDTO> findByCategoryId(@PathVariable Long categoryId) {
         return toProductDTOList(productRepository.findByCategoryId(categoryId));
     }
+    public ProductDTO findById(@PathVariable Long id) {
+        return toProductDTO(productRepository.findById(id).orElse(null));
+    }
 
     public void create(CreateProductRequest request) {
         if (productRepository.existsByName(request.getName())) {
@@ -75,5 +78,20 @@ public class ProductService {
                                 ).toList()
                         ).build())
                 .toList();
+    }
+    private ProductDTO toProductDTO(Product product) {
+        return ProductDTO.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .prices(product.getProductPrices().stream()
+                        .map(ProductPrice::getPrice).toList()
+                )
+                .productAttributes(product.getProductAttributes().stream()
+                        .map(a -> ProductAttributeDTO.builder()
+                                .name(a.getAttribute().getName())
+                                .value(a.getAttributeValue().getValue()).build()
+                        ).toList()
+                ).build();
     }
 }

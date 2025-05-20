@@ -13,6 +13,6 @@ public class UserAssemblyResponse {
     private Long id;
     private String name;
     private Long userId;
-
+    private int price;
     private List<UserAssemblyComponentsDto> userAssemblyComponents;
 }

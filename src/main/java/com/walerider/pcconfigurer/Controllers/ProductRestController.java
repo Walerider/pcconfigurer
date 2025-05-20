@@ -26,6 +26,10 @@ public class ProductRestController {
     public List<ProductDTO> getAllProductsByCategoryId(@PathVariable Long id) {
         return productService.findByCategoryId(id);
     }
+    @GetMapping("/{id}")
+    public ProductDTO getProductById(@PathVariable Long id) {
+        return productService.findById(id);
+    }
 
     @PostMapping("/create")
     public String create(@RequestBody CreateProductRequest request) {

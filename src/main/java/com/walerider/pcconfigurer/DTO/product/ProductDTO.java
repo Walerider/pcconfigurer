@@ -18,5 +18,4 @@ public class ProductDTO {
 
     private List<ProductAttributeDTO> productAttributes;
 
-    //сделать OneToMany отношение aттрибутов
 }

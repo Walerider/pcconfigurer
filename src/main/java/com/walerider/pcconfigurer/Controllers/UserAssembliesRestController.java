@@ -29,8 +29,8 @@ public class UserAssembliesRestController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createUserAssembly(@RequestBody UserAssemblyRequest request) {
-        userAssembliesService.createUserAssemblies(request);
-        return new ResponseEntity<>("Assembly add", HttpStatus.OK);
+        UserAssembly assembly =  userAssembliesService.createUserAssemblies(request);
+        return new ResponseEntity<>("" + assembly.getId(), HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")

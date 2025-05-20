@@ -12,7 +12,7 @@ import java.util.Set;
 public class UserAssemblyRequest {
     private String name;
     private Long userId;
-
+    private int price;
     Set<Long> productIds;
 }
 

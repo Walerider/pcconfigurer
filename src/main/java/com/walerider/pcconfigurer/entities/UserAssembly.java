@@ -30,9 +30,13 @@ public class UserAssembly {
     @OneToMany(mappedBy = "assembly", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserAssemblyComponents> userAssemblyComponents;
 
-    public UserAssembly(String name, User user) {
+    @Column(name = "price")
+    private Integer price;
+
+    public UserAssembly(String name, User user,Integer price) {
         this.name = name;
         this.user = user;
+        this.price = price;
     }
 
     @Override

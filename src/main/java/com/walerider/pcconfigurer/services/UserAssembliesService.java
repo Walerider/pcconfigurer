@@ -42,7 +42,9 @@ public class UserAssembliesService {
                                         .id(ac.getId())
                                         .productName(ac.getProduct().getName()).build())
                                 .toList()
-                        ).build())
+                        )
+                        .price(a.getPrice())
+                        .build())
                 .toList();
     }
 
@@ -58,11 +60,13 @@ public class UserAssembliesService {
                                         .id(ac.getId())
                                         .productName(ac.getProduct().getName()).build())
                                 .toList()
-                        ).build())
+                        )
+                        .price(a.getPrice())
+                        .build())
                 .toList();
     }
 
-    public void createUserAssemblies(UserAssemblyRequest request) {
+    public UserAssembly createUserAssemblies(UserAssemblyRequest request) {
         User user = userRepository
                 .findById(request.getUserId())
                 .orElseThrow(() -> new BadRequestException("User doesn't exist"));
@@ -74,7 +78,7 @@ public class UserAssembliesService {
             throw new BadRequestException("not valid ids");
         }
 
-        UserAssembly userAssembly = new UserAssembly(request.getName(), user);
+        UserAssembly userAssembly = new UserAssembly(request.getName(), user,request.getPrice());
         userAssembliesRepository.save(userAssembly);
 
         List<Product> products = productRepository.findAllById(request.getProductIds());
@@ -84,6 +88,7 @@ public class UserAssembliesService {
                         .product(p).build())
                 .toList();
         userAssemblyComponentsRepository.saveAll(userAssemblyComponentsList);
+        return userAssembly;
     }
 
     public void updateUserAssemblies(UserAssemblyRequest request, Long assemblyId) {

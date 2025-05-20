@@ -23,11 +23,15 @@ public class UserRestController {
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
-
+    @GetMapping("/user")
+    public ResponseEntity<String> getUser(@RequestParam String username,@RequestParam String password) {
+        User u = userService.getUserByUsername(username, password);
+        return ResponseEntity.ok("" + u.getId());
+    }
     @PostMapping("/create")
     public String createUser(@RequestBody User user) {
-        userService.createUser(user);
-        return "Client add";
+        User u = userService.createUser(user);
+        return u.getId().toString();
     }
 
     @PutMapping("/update/{id}")
