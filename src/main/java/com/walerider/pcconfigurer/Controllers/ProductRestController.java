@@ -4,9 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.walerider.pcconfigurer.DTO.product.CreateProductRequest;
 import com.walerider.pcconfigurer.DTO.product.ProductDTO;
+import com.walerider.pcconfigurer.DTO.product.ProductFilterDTO;
 import com.walerider.pcconfigurer.repositories.ProductRepository;
 import com.walerider.pcconfigurer.services.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,8 +39,12 @@ public class ProductRestController {
         productService.create(request);
         return "product created";
     }
+    @PostMapping("/filter")
+    public ResponseEntity<List<ProductDTO>> filterProducts(
+            @RequestBody @Valid ProductFilterDTO filterRequest) {
 
-    /*
-    * надо пофиксить DTO, чтобы у меня ещё аттрибуты со значениме выдавались, которые к продукту привязаны
-    **/
+        List<ProductDTO> products = productService.findByAttributes(filterRequest);
+
+        return ResponseEntity.ok(products);
+    }
 }

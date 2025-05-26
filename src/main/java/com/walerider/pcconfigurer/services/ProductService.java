@@ -3,14 +3,22 @@ package com.walerider.pcconfigurer.services;
 import com.walerider.pcconfigurer.DTO.product.CreateProductRequest;
 import com.walerider.pcconfigurer.DTO.product.ProductAttributeDTO;
 import com.walerider.pcconfigurer.DTO.product.ProductDTO;
+import com.walerider.pcconfigurer.DTO.product.ProductFilterDTO;
 import com.walerider.pcconfigurer.entities.*;
 import com.walerider.pcconfigurer.repositories.*;
 import com.walerider.pcconfigurer.validation.exceptions.BadRequestException;
+import jakarta.persistence.criteria.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,10 +33,52 @@ public class ProductService {
     public List<ProductDTO> getAllProducts() {
         return toProductDTOList(productRepository.findAllWithSource());
     }
+    public List<ProductDTO> findByAttributes(@RequestBody @Valid ProductFilterDTO filterRequest) {
+        if(filterRequest.getProductAttributes().isEmpty()) {
+            throw new BadRequestException("No product attributes found");
+        }
+        Specification<Product> spec = (root, query, cb) -> {
+            Subquery<Long> subquery = query.subquery(Long.class);
+            Root<Product> subRoot = subquery.from(Product.class);
+
+            Join<Product, ProductAttribute> subAttributeJoin = subRoot.join("productAttributes");
+            Join<ProductAttribute, Attribute> subAttribute = subAttributeJoin.join("attribute");
+            Join<ProductAttribute, AttributeValue> subAttributeValue = subAttributeJoin.join("attributeValue");
+
+
+            Map<String, List<String>> attributesByName = filterRequest.getProductAttributes().stream()
+                    .collect(Collectors.groupingBy(
+                            ProductAttributeDTO::getName,
+                            Collectors.mapping(ProductAttributeDTO::getValue, Collectors.toList())
+                    ));
+
+            List<Predicate> subPredicates = new ArrayList<>();
+            attributesByName.forEach((attrName, values) -> {
+                subPredicates.add(cb.and(
+                        cb.equal(subAttribute.get("name"), attrName),
+                        subAttributeValue.get("value").in(values)
+                ));
+            });
+
+            subquery.select(subRoot.get("id"))
+                    .where(cb.or(subPredicates.toArray(new Predicate[0])))
+                    .groupBy(subRoot.get("id"))
+                    .having(cb.equal(cb.countDistinct(subAttribute.get("name")),
+                            (long) attributesByName.size()));
+
+            return root.get("id").in(subquery);
+        };
+
+        List<Product> products = productRepository.findAll(spec);
+        return products.stream()
+                .map(ProductService::toProductDTO)
+                .collect(Collectors.toList());
+    }
 
     public List<ProductDTO> findByCategoryId(@PathVariable Long categoryId) {
         return toProductDTOList(productRepository.findByCategoryId(categoryId));
     }
+
     public ProductDTO findById(@PathVariable Long id) {
         return toProductDTO(productRepository.findById(id).orElse(null));
     }
@@ -79,7 +129,7 @@ public class ProductService {
                         ).build())
                 .toList();
     }
-    private ProductDTO toProductDTO(Product product) {
+    private static ProductDTO toProductDTO(Product product) {
         return ProductDTO.builder()
                 .id(product.getId())
                 .name(product.getName())
