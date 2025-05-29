@@ -33,15 +33,16 @@ public class ProductService {
     public List<ProductDTO> getAllProducts() {
         return toProductDTOList(productRepository.findAllWithSource());
     }
-    public List<ProductDTO> findByAttributes(@RequestBody @Valid ProductFilterDTO filterRequest) {
+    public List<ProductDTO> findByAttributes(@PathVariable Long id, @RequestBody @Valid ProductFilterDTO filterRequest) {
         if(filterRequest.getProductAttributes().isEmpty()) {
-            throw new BadRequestException("No product attributes found");
+            return toProductDTOList(productRepository.findByCategoryId(id));
         }
         Specification<Product> spec = (root, query, cb) -> {
             Subquery<Long> subquery = query.subquery(Long.class);
             Root<Product> subRoot = subquery.from(Product.class);
 
             Join<Product, ProductAttribute> subAttributeJoin = subRoot.join("productAttributes");
+            Join<Product, Category> subCategoryJoin = subRoot.join("category");
             Join<ProductAttribute, Attribute> subAttribute = subAttributeJoin.join("attribute");
             Join<ProductAttribute, AttributeValue> subAttributeValue = subAttributeJoin.join("attributeValue");
 
@@ -59,9 +60,11 @@ public class ProductService {
                         subAttributeValue.get("value").in(values)
                 ));
             });
-
+            Predicate categoryPredicate = id != null ?
+                    cb.equal(subCategoryJoin.get("id"), id) :
+                    cb.conjunction();
             subquery.select(subRoot.get("id"))
-                    .where(cb.or(subPredicates.toArray(new Predicate[0])))
+                    .where(cb.and(categoryPredicate,cb.or(subPredicates.toArray(new Predicate[0]))))
                     .groupBy(subRoot.get("id"))
                     .having(cb.equal(cb.countDistinct(subAttribute.get("name")),
                             (long) attributesByName.size()));
@@ -70,6 +73,9 @@ public class ProductService {
         };
 
         List<Product> products = productRepository.findAll(spec);
+        if(products.isEmpty()) {
+            throw new BadRequestException("No products found");
+        }
         return products.stream()
                 .map(ProductService::toProductDTO)
                 .collect(Collectors.toList());

@@ -39,11 +39,11 @@ public class ProductRestController {
         productService.create(request);
         return "product created";
     }
-    @PostMapping("/filter")
-    public ResponseEntity<List<ProductDTO>> filterProducts(
-            @RequestBody @Valid ProductFilterDTO filterRequest) {
+    @PostMapping("/category/filter/{id}")
+    public ResponseEntity<List<ProductDTO>> filterProducts(@PathVariable Long id,
+                                                           @RequestBody @Valid ProductFilterDTO filterRequest) {
 
-        List<ProductDTO> products = productService.findByAttributes(filterRequest);
+        List<ProductDTO> products = productService.findByAttributes(id,filterRequest);
 
         return ResponseEntity.ok(products);
     }
