@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -55,10 +56,42 @@ public class ProductService {
 
             List<Predicate> subPredicates = new ArrayList<>();
             attributesByName.forEach((attrName, values) -> {
-                subPredicates.add(cb.and(
-                        cb.equal(subAttribute.get("name"), attrName),
-                        subAttributeValue.get("value").in(values)
-                ));
+                if ("Сокет".equals(attrName)) {
+                    // Создаем предикаты для каждого значения сокета
+                    values.forEach(value -> {
+                        // Разбиваем значение по запятым и тримим пробелы
+                        String[] socketValues = value.split("\\s*,\\s*");
+
+                        // Для каждого значения сокета создаем OR-условие
+                        List<Predicate> socketPredicates = Arrays.stream(socketValues)
+                                .map(socketValue -> cb.and(
+                                        cb.equal(subAttribute.get("name"), attrName),
+                                        cb.like(subAttributeValue.get("value"), "%" + socketValue + "%")
+                                ))
+                                .collect(Collectors.toList());
+
+                        subPredicates.add(cb.or(socketPredicates.toArray(new Predicate[0])));
+                    });
+                }else if ("Форм-фактор совместимых плат".equals(attrName)) {
+                    values.forEach(value -> {
+                        String[] formFactorValues = value.split("\\s*,\\s*");
+
+                        List<Predicate> socketPredicates = Arrays.stream(formFactorValues)
+                                .map(socketValue -> cb.and(
+                                        cb.equal(subAttribute.get("name"), attrName),
+                                        cb.like(subAttributeValue.get("value"), "%" + socketValue + "%")
+                                ))
+                                .collect(Collectors.toList());
+
+                        subPredicates.add(cb.or(socketPredicates.toArray(new Predicate[0])));
+                    });
+                } else {
+                    // Обычная обработка для других атрибутов
+                    subPredicates.add(cb.and(
+                            cb.equal(subAttribute.get("name"), attrName),
+                            subAttributeValue.get("value").in(values)
+                    ));
+                }
             });
             Predicate categoryPredicate = id != null ?
                     cb.equal(subCategoryJoin.get("id"), id) :
