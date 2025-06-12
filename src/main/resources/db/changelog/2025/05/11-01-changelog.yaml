@@ -33,4 +33,171 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: products
 
-
+  - changeSet:
+      id: 1746988031215-3
+      author: waler
+      changes:
+        - loadData:
+            tableName: attributes
+            file: db/data/attributes.csv
+            separator: ","
+            encoding: UTF-8
+            quotchar: '"'
+            columns:
+              - column:
+                  name: id
+                  index: 1
+                  type: NUMERIC
+              - column:
+                  name: name
+                  index: 2
+                  type: STRING
+            primaryKey: id
+  - changeSet:
+      id: 1746988031215-4
+      author: waler
+      changes:
+        - loadData:
+            tableName: attribute_values
+            file: db/data/attribute_values.csv
+            separator: ","
+            encoding: UTF-8
+            quotchar: '"'
+            columns:
+              - column:
+                  name: id
+                  index: 1
+                  type: NUMERIC
+              - column:
+                  name: value
+                  index: 2
+                  type: STRING
+            primaryKey: id
+  - changeSet:
+      id: 1746988031215-5
+      author: waler
+      changes:
+        - loadData:
+            tableName: categories
+            file: db/data/categories.csv
+            separator: ","
+            encoding: UTF-8
+            quotchar: '"'
+            columns:
+              - column:
+                  name: id
+                  index: 1
+                  type: NUMERIC
+              - column:
+                  name: name
+                  index: 2
+                  type: STRING
+            primaryKey: id
+  - changeSet:
+      id: 1746988031215-6
+      author: waler
+      changes:
+        - loadData:
+            tableName: products
+            file: db/data/products.csv
+            separator: ","
+            encoding: UTF-8
+            quotchar: '"'
+            columns:
+              - column:
+                  name: id
+                  index: 1
+                  type: NUMERIC
+              - column:
+                  name: category_id
+                  index: 2
+                  type: NUMERIC
+              - column:
+                  name: name
+                  index: 3
+                  type: STRING
+              - column:
+                  name: description
+                  index: 4
+                  type: STRING
+            primaryKey: id
+  - changeSet:
+      id: 1746988031215-7
+      author: waler
+      changes:
+        - loadData:
+            tableName: product_prices
+            file: db/data/product_prices.csv
+            separator: ","
+            encoding: UTF-8
+            quotchar: '"'
+            columns:
+              - column:
+                  name: id
+                  index: 1
+                  type: NUMERIC
+              - column:
+                  name: product_id
+                  index: 2
+                  type: NUMERIC
+              - column:
+                  name: source
+                  index: 3
+                  type: STRING
+              - column:
+                  name: price
+                  index: 4
+                  type: NUMERIC
+            primaryKey: id
+  - changeSet:
+      id: 1746988031215-8
+      author: waler
+      changes:
+        - loadData:
+            tableName: product_attributes
+            file: db/data/product_attributes.csv
+            separator: ","
+            encoding: UTF-8
+            quotchar: '"'
+            columns:
+              - column:
+                  name: id
+                  index: 1
+                  type: NUMERIC
+              - column:
+                  name: product_id
+                  index: 2
+                  type: NUMERIC
+              - column:
+                  name: attribute_id
+                  index: 3
+                  type: NUMERIC
+              - column:
+                  name: attribute_value_id
+                  index: 4
+                  type: NUMERIC
+            primaryKey: id
+  - changeSet:
+      id: 1746988031215-9
+      author: waler
+      changes:
+        - loadData:
+            tableName: product_images
+            file: db/data/product_images.csv
+            separator: ","
+            encoding: UTF-8
+            quotchar: '"'
+            columns:
+              - column:
+                  name: id
+                  index: 1
+                  type: NUMERIC
+              - column:
+                  name: product_id
+                  index: 2
+                  type: NUMERIC
+              - column:
+                  name: image_source
+                  index: 3
+                  type: STRING
+            primaryKey: id
