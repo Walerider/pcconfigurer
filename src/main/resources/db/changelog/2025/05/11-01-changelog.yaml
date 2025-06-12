@@ -11,7 +11,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     primaryKey: true
-                    primaryKeyName: pk_productimage
+                    primaryKeyName: pk_product_images
                   name: id
                   type: BIGINT
               - column:
@@ -20,7 +20,7 @@ databaseChangeLog:
               - column:
                   name: image_source
                   type: text(2147483647)
-            tableName: product_image
+            tableName: product_images
   - changeSet:
       id: 1746988031215-2
       author: waler
@@ -28,11 +28,10 @@ databaseChangeLog:
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: product_id
-            baseTableName: product_image
+            baseTableName: product_images
             constraintName: FK_PRODUCTIMAGE_ON_PRODUCT
             referencedColumnNames: id
             referencedTableName: products
-
   - changeSet:
       id: 1746988031215-3
       author: waler
