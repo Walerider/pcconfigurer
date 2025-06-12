@@ -145,9 +145,6 @@ databaseChangeLog:
               - column:
                   name: user_id
                   type: BIGINT
-              - column:
-                  name: user_id
-                  type: BIGINT
             tableName: user_assemblies
   - changeSet:
       id: 1745332201888-8
@@ -165,6 +162,9 @@ databaseChangeLog:
                   type: BIGINT
               - column:
                   name: product_id
+                  type: BIGINT
+              - column:
+                  name: assembly_id
                   type: BIGINT
               - column:
                   name: price
