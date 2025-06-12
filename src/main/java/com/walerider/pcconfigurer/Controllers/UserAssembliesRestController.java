@@ -23,8 +23,12 @@ public class UserAssembliesRestController {
     }
 
     @GetMapping("/user/{id}")
-    public List<UserAssemblyResponse> getAllUserAssembliesDTOById(@PathVariable Long id) {
+    public List<UserAssemblyResponse> getAllUserAssembliesDTOByUserId(@PathVariable Long id) {
         return userAssembliesService.getAllUserAssembliesDTOByUserId(id);
+    }
+    @GetMapping("/{id}")
+    public UserAssemblyResponse getUserAssembliesDTOById(@PathVariable Long id) {
+        return userAssembliesService.getAllUserAssembliesDTOById(id);
     }
 
     @PostMapping("/create")

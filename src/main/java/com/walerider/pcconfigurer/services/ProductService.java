@@ -1,9 +1,6 @@
 package com.walerider.pcconfigurer.services;
 
-import com.walerider.pcconfigurer.DTO.product.CreateProductRequest;
-import com.walerider.pcconfigurer.DTO.product.ProductAttributeDTO;
-import com.walerider.pcconfigurer.DTO.product.ProductDTO;
-import com.walerider.pcconfigurer.DTO.product.ProductFilterDTO;
+import com.walerider.pcconfigurer.DTO.product.*;
 import com.walerider.pcconfigurer.entities.*;
 import com.walerider.pcconfigurer.repositories.*;
 import com.walerider.pcconfigurer.validation.exceptions.BadRequestException;
@@ -165,7 +162,13 @@ public class ProductService {
                                         .name(a.getAttribute().getName())
                                         .value(a.getAttributeValue().getValue()).build()
                                 ).toList()
-                        ).build())
+                        ).productImages(p.getProductImages().stream()
+                                .map(m -> ProductImageDTO.builder()
+                                        .id(m.getId())
+                                        .productId(p.getId())
+                                        .source(m.getImageSource()).build())
+                                .toList())
+                        .build())
                 .toList();
     }
     private static ProductDTO toProductDTO(Product product) {
@@ -181,6 +184,11 @@ public class ProductService {
                                 .name(a.getAttribute().getName())
                                 .value(a.getAttributeValue().getValue()).build()
                         ).toList()
-                ).build();
+                ).productImages(product.getProductImages().stream()
+                        .map(m -> ProductImageDTO.builder()
+                                .id(m.getId())
+                                .productId(product.getId())
+                                .source(m.getImageSource()).build())
+                        .toList()).build();
     }
 }

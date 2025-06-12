@@ -19,11 +19,17 @@ public interface UserAssembliesRepository extends JpaRepository<UserAssembly, Lo
         LEFT JOIN FETCH a.user
     """)
     List<UserAssembly> findAllWithComponents();
-
     @Query("""
         SELECT a FROM UserAssembly a
         LEFT JOIN FETCH a.userAssemblyComponents
         WHERE a.user.id = :userId
     """)
     List<UserAssembly> findAllByUserIdWithComponents(Long userId);
+    @Query("""
+        SELECT a FROM UserAssembly a
+        LEFT JOIN FETCH a.userAssemblyComponents
+        WHERE a.id = :id
+    """)
+    UserAssembly findByIdWithComponents(Long id);
+
 }

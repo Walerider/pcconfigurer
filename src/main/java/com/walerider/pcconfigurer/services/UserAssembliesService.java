@@ -39,8 +39,10 @@ public class UserAssembliesService {
                         .name(a.getName())
                         .userAssemblyComponents(a.getUserAssemblyComponents().stream()
                                 .map(ac -> UserAssemblyComponentsDto.builder()
-                                        .id(ac.getId())
-                                        .productName(ac.getProduct().getName()).build())
+                                        .id(ac.getProduct().getId())
+                                        .productName(ac.getProduct().getName())
+                                        .componentCategory(ac.getProduct().getCategory().getName())
+                                        .build())
                                 .toList()
                         )
                         .price(a.getPrice())
@@ -57,13 +59,31 @@ public class UserAssembliesService {
                         .name(a.getName())
                         .userAssemblyComponents(a.getUserAssemblyComponents().stream()
                                 .map(ac -> UserAssemblyComponentsDto.builder()
-                                        .id(ac.getId())
-                                        .productName(ac.getProduct().getName()).build())
+                                        .id(ac.getProduct().getId())
+                                        .productName(ac.getProduct().getName())
+                                        .componentCategory(ac.getProduct().getCategory().getName())
+                                        .build())
                                 .toList()
                         )
                         .price(a.getPrice())
                         .build())
                 .toList();
+    }
+    public UserAssemblyResponse getAllUserAssembliesDTOById(Long id) {
+        UserAssembly userAssembly = userAssembliesRepository.findByIdWithComponents(id);
+        return UserAssemblyResponse.builder()
+                .id(userAssembly.getId())
+                .userId(userAssembly.getUser().getId())
+                .name(userAssembly.getName())
+                .userAssemblyComponents(userAssembly.getUserAssemblyComponents().stream()
+                        .map(ac -> UserAssemblyComponentsDto.builder()
+                                .id(ac.getProduct().getId())
+                                .productName(ac.getProduct().getName())
+                                .componentCategory(ac.getProduct().getCategory().getName()).build())
+                        .toList())
+                .price(userAssembly.getPrice())
+                .build();
+
     }
 
     public UserAssembly createUserAssemblies(UserAssemblyRequest request) {
@@ -71,14 +91,14 @@ public class UserAssembliesService {
                 .findById(request.getUserId())
                 .orElseThrow(() -> new BadRequestException("User doesn't exist"));
 
-        if (userAssembliesRepository.findByName(request.getName()) != null) {
+        UserAssembly userAssembly = new UserAssembly(request.getName(), user,request.getPrice());
+        if (userAssembliesRepository.findByName(request.getName()) != null && userAssembliesRepository.findByName(request.getName()).getUser().getId().equals(user.getId())) {
             throw new BadRequestException("Assembly with this name already exists");
         }
         if (productRepository.countByIdIn(request.getProductIds()) != request.getProductIds().size()) {
             throw new BadRequestException("not valid ids");
         }
 
-        UserAssembly userAssembly = new UserAssembly(request.getName(), user,request.getPrice());
         userAssembliesRepository.save(userAssembly);
 
         List<Product> products = productRepository.findAllById(request.getProductIds());

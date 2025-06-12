@@ -8,4 +8,5 @@ import lombok.Data;
 public class UserAssemblyComponentsDto {
     private Long id;
     private String productName;
+    private String componentCategory;
 }
