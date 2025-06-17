@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,7 +58,7 @@ public class ProductService {
                                         cb.equal(subAttribute.get("name"), attrName),
                                         cb.like(subAttributeValue.get("value"), "%" + socketValue + "%")
                                 ))
-                                .collect(Collectors.toList());
+                                .toList();
 
                         subPredicates.add(cb.or(socketPredicates.toArray(new Predicate[0])));
                     });
@@ -74,7 +71,7 @@ public class ProductService {
                                         cb.equal(subAttribute.get("name"), attrName),
                                         cb.like(subAttributeValue.get("value"), "%" + socketValue + "%")
                                 ))
-                                .collect(Collectors.toList());
+                                .toList();
 
                         subPredicates.add(cb.or(socketPredicates.toArray(new Predicate[0])));
                     });
@@ -111,7 +108,7 @@ public class ProductService {
     }
 
     public ProductDTO findById(@PathVariable Long id) {
-        return toProductDTO(productRepository.findById(id).orElse(null));
+        return toProductDTO(Objects.requireNonNull(productRepository.findById(id).orElse(null)));
     }
 
     public void create(CreateProductRequest request) {
@@ -152,6 +149,7 @@ public class ProductService {
                         .prices(p.getProductPrices().stream()
                                 .map(ProductPrice::getPrice).toList()
                         )
+                        .category(p.getCategory().getName())
                         .productAttributes(p.getProductAttributes().stream()
                                 .map(a -> ProductAttributeDTO.builder()
                                         .name(a.getAttribute().getName())
@@ -174,6 +172,7 @@ public class ProductService {
                 .prices(product.getProductPrices().stream()
                         .map(ProductPrice::getPrice).toList()
                 )
+                .category(product.getCategory().getName())
                 .productAttributes(product.getProductAttributes().stream()
                         .map(a -> ProductAttributeDTO.builder()
                                 .name(a.getAttribute().getName())
