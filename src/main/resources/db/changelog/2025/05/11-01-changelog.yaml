@@ -29,7 +29,7 @@ databaseChangeLog:
         - addForeignKeyConstraint:
             baseColumnNames: product_id
             baseTableName: product_images
-            constraintName: FK_PRODUCTIMAGE_ON_PRODUCT
+            constraintName: FK_PRODUCT_IMAGE_ON_PRODUCT
             referencedColumnNames: id
             referencedTableName: products
   - changeSet:

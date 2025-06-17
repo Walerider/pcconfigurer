@@ -17,6 +17,7 @@ import java.util.List;
 public class UserAssembliesRestController {
     private final UserAssembliesService userAssembliesService;
 
+
     @GetMapping("/all")
     public List<UserAssemblyResponse> getAllUserAssemblies() {
         return userAssembliesService.getAllUserAssemblies();
@@ -49,10 +50,4 @@ public class UserAssembliesRestController {
         return new ResponseEntity<>("Assembly by id " + id + " delete", HttpStatus.OK);
     }
 
-    /**
-     * реализовать создание компонентов
-     */
-
-    /*сделать удаление сборок
-    *  Надо DTO здешний пофиксить, чтобы мне сборки отдавало сразу с компонентами*/
 }

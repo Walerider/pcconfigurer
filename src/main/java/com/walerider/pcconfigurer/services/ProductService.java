@@ -54,12 +54,8 @@ public class ProductService {
             List<Predicate> subPredicates = new ArrayList<>();
             attributesByName.forEach((attrName, values) -> {
                 if ("Сокет".equals(attrName)) {
-                    // Создаем предикаты для каждого значения сокета
                     values.forEach(value -> {
-                        // Разбиваем значение по запятым и тримим пробелы
                         String[] socketValues = value.split("\\s*,\\s*");
-
-                        // Для каждого значения сокета создаем OR-условие
                         List<Predicate> socketPredicates = Arrays.stream(socketValues)
                                 .map(socketValue -> cb.and(
                                         cb.equal(subAttribute.get("name"), attrName),
@@ -83,7 +79,6 @@ public class ProductService {
                         subPredicates.add(cb.or(socketPredicates.toArray(new Predicate[0])));
                     });
                 } else {
-                    // Обычная обработка для других атрибутов
                     subPredicates.add(cb.and(
                             cb.equal(subAttribute.get("name"), attrName),
                             subAttributeValue.get("value").in(values)

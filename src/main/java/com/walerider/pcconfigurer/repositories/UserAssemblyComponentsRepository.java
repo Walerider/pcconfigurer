@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface UserAssemblyComponentsRepository extends JpaRepository<UserAssemblyComponents, Long> {
     List<UserAssemblyComponents> findByAssemblyId(Long assemblyId);
+    List<UserAssemblyComponents> deleteByAssemblyId(Long assemblyId);
 }

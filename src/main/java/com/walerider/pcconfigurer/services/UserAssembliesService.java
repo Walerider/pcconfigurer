@@ -112,13 +112,45 @@ public class UserAssembliesService {
     }
 
     public void updateUserAssemblies(UserAssemblyRequest request, Long assemblyId) {
-        userAssembliesRepository.findById(assemblyId)
-                .map(assembly -> {
-                    assembly.setName(request.getName());
-                    assembly.setUser(userRepository.findById(request.getUserId())
-                            .orElseThrow(() -> new BadRequestException("User doesnt exist")));
-                    return userAssembliesRepository.save(assembly);
-                }).orElseThrow(() -> new BadRequestException("Assembly not found"));
+        // Находим сборку или выбрасываем исключение
+        UserAssembly userAssembly = userAssembliesRepository.findById(assemblyId)
+                .orElseThrow(() -> new BadRequestException("Assembly not found"));
+
+        // Проверяем, существует ли пользователь
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new BadRequestException("User doesn't exist"));
+
+        // Проверяем, нет ли у этого пользователя сборки с таким же именем (кроме текущей)
+        UserAssembly existingAssembly = userAssembliesRepository.findByName(request.getName());
+        if (existingAssembly != null
+                && existingAssembly.getUser().getId().equals(user.getId())
+                && !existingAssembly.getId().equals(assemblyId)) {
+            throw new BadRequestException("Assembly with this name already exists");
+        }
+
+        // Проверяем, все ли ID товаров валидны
+        if (productRepository.countByIdIn(request.getProductIds()) != request.getProductIds().size()) {
+            throw new BadRequestException("not valid ids");
+        }
+
+        // Обновляем основную информацию о сборке
+        userAssembly.setName(request.getName());
+        userAssembly.setUser(user);
+        userAssembly.setPrice(request.getPrice());
+        userAssembliesRepository.save(userAssembly);
+
+        // Удаляем старые компоненты сборки
+        userAssemblyComponentsRepository.deleteByAssemblyId(assemblyId);
+
+        // Создаём новые компоненты на основе переданных productIds
+        List<Product> products = productRepository.findAllById(request.getProductIds());
+        List<UserAssemblyComponents> newComponents = products.stream()
+                .map(product -> UserAssemblyComponents.builder()
+                        .assembly(userAssembly)
+                        .product(product)
+                        .build())
+                .toList();
+        userAssemblyComponentsRepository.saveAll(newComponents);
     }
 
     public void deleteUserAssembly(Long id) {
@@ -126,5 +158,6 @@ public class UserAssembliesService {
             throw new BadRequestException("assembly not found");
         }
         userAssembliesRepository.deleteById(id);
+        userAssemblyComponentsRepository.deleteById(id);
     }
 }
